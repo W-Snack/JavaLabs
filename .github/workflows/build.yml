@@ -3,54 +3,41 @@ name: Build and Package
 on:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
+  release:
+    types: [created]
 
 jobs:
-  build:
+  build_jar:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      # Установка Java 17
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      # Проверка содержимого папки (для диагностики)
-      - name: List files
-        run: ls -la Lab1Bower/src/
-
-      # Переход в папку с исходниками
-      - name: Navigate to source directory
-        run: cd Lab1Bower/src
-
-      # Компиляция и сборка JAR (с абсолютными путями)
-      - name: Compile and package
+      - name: Build JAR
         run: |
           cd Lab1Bower/src
-          javac -d ./out ./Game.java ./Arrow.java ./GamePanel.java ./GameThread.java ./Target.java
+          javac -d ./out Game.java Arrow.java GamePanel.java GameThread.java Target.java
           jar cvfe Game.jar Game -C ./out .
 
-      # Загрузка артефакта (исправленный путь)
-      - name: Upload Artifact
+      - name: Upload JAR Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: SniperGame.jar
+          name: Game.jar
           path: Lab1Bower/src/Game.jar
-  build_exe:
-    needs: build
-    runs-on: windows-latest  # Требуется Windows для jpackage
-    steps:
-      - uses: actions/checkout@v4
 
+  build_exe:
+    needs: build_jar
+    runs-on: windows-latest
+    steps:
       - name: Download JAR Artifact
         uses: actions/download-artifact@v4
         with:
-          name: SniperGame.jar
-          path: .
+          name: Game.jar
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -58,18 +45,21 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Verify JAR exists
+        run: Get-ChildItem -Path . -Filter Game.jar
+        
       - name: Generate EXE with jpackage
         run: |
-          jpackage ^
-            --name SniperGame ^
-            --input . ^
-            --main-jar Game.jar ^
-            --main-class Game ^
-            --type exe ^
+          jpackage `
+            --name SniperGame `
+            --input . `
+            --main-jar Game.jar `
+            --main-class Game `
+            --type exe `
             --win-console
 
       - name: Upload EXE Artifact
         uses: actions/upload-artifact@v4
         with:
           name: SniperGame.exe
-          path: SniperGame.exe        
+          path: SniperGame.exe
