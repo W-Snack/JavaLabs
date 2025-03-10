@@ -1,8 +1,10 @@
 name: Build and Package
 
 on:
-  release:
-    types: [created]
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
   build:
@@ -10,23 +12,26 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Установка Java (версия 17 рекомендуется для Swing)
+      # Установка Java 17
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      # Сборка проекта через javac (если нет Maven/Gradle)
-      - name: Build JAR
-        run: |
-          cd Lab1Bower
-          javac -d ./out ./src/*.java
-          jar cvfe game.jar Game -C ./out .
+      # Переход в папку с исходниками
+      - name: Navigate to source directory
+        run: cd Lab1Bower
 
-      # Загрузка JAR-файла как артефакт
+      # Компиляция и сборка JAR
+      - name: Compile and package
+        run: |
+          javac -d ./out *.java
+          jar cvfe Game.jar Game -C ./out .
+
+      # Загрузка артефакта
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: game.jar
-          path: game.jar
+          name: SniperGame.jar
+          path: Lab1Bower/SniperGame.jar
