@@ -21,7 +21,7 @@ jobs:
 
       # Переход в папку с исходниками
       - name: Navigate to source directory
-        run: cd Lab1Bower/src/
+        run: cd Lab1Bower/src
 
       # Компиляция и сборка JAR
       - name: Compile and package
