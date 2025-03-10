@@ -20,6 +20,7 @@ jobs:
       # Сборка проекта через javac (если нет Maven/Gradle)
       - name: Build JAR
         run: |
+          cd Lab1Bower
           javac -d ./out ./src/*.java
           jar cvfe game.jar SniperGame -C ./out .
 
