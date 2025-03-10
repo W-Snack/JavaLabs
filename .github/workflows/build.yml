@@ -22,7 +22,7 @@ jobs:
         run: |
           cd Lab1Bower
           javac -d ./out ./src/*.java
-          jar cvfe game.jar SniperGame -C ./out .
+          jar cvfe game.jar Game -C ./out .
 
       # Загрузка JAR-файла как артефакт
       - name: Upload Artifact
