@@ -26,7 +26,7 @@ jobs:
       # Компиляция и сборка JAR
       - name: Compile and package
         run: |
-          javac -d ./out *.java
+          javac -d ./out Game.java Arrow.java GamePanel.java GameThread.java Target.java
           jar cvfe Game.jar Game -C ./out .
 
       # Загрузка артефакта
