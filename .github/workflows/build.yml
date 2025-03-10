@@ -57,7 +57,7 @@ jobs:
            --input . `
            --main-jar Game.jar `
            --main-class Game `
-           --type exe `
+           --type app-image `
            --win-console `
            --dest ./dist
            # Проверка созданных файлов
