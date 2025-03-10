@@ -30,7 +30,7 @@ jobs:
           name: Game.jar
           path: Lab1Bower/src/Game.jar
 
-  build_exe:
+  build_portable:
     needs: build_jar
     runs-on: windows-latest
     steps:
@@ -45,26 +45,26 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Verify JAR exists
-        run: Get-ChildItem -Path . -Filter Game.jar
+      - name: Install WiX (требуется для сборки)
+        run: choco install wix
 
-        
-        
-      - name: Generate EXE with jpackage
+      - name: Generate Portable App
         run: |
           jpackage `
-           --name SniperGame `
-           --input . `
-           --main-jar Game.jar `
-           --main-class Game `
-           --type app-image `
-           --win-console `
-           --dest ./dist
-           # Проверка созданных файлов
-          Get-ChildItem -Path ./dist -Recurse
+            --name SniperGame `
+            --input . `
+            --main-jar Game.jar `
+            --main-class Game `
+            --type app-image `
+            --dest ./dist `
+            --win-console
 
-      - name: Upload EXE Artifact
+      - name: Compress Portable Folder
+        run: |
+          Compress-Archive -Path ./dist/SniperGame -DestinationPath ./dist/SniperGame.zip
+
+      - name: Upload Portable Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: SniperGame.exe
-          path: ./dist/SniperGame-*.exe
+          name: SniperGame-Portable.zip
+          path: ./dist/SniperGame.zip
