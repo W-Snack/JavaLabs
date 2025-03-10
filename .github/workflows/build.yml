@@ -47,16 +47,21 @@ jobs:
 
       - name: Verify JAR exists
         run: Get-ChildItem -Path . -Filter Game.jar
+
+        
         
       - name: Generate EXE with jpackage
         run: |
           jpackage `
-            --name SniperGame `
-            --input . `
-            --main-jar Game.jar `
-            --main-class Game `
-            --type exe `
-            --win-console
+           --name SniperGame `
+           --input . `
+           --main-jar Game.jar `
+           --main-class Game `
+           --type exe `
+           --win-console `
+           --dest ./dist
+           # Проверка созданных файлов
+          Get-ChildItem -Path ./dist -Recurse
 
       - name: Upload EXE Artifact
         uses: actions/upload-artifact@v4
