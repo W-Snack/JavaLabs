@@ -30,6 +30,7 @@ jobs:
       # Компиляция и сборка JAR (с абсолютными путями)
       - name: Compile and package
         run: |
+          cd Lab1Bower/src
           javac -d ./out ./Game.java ./Arrow.java ./GamePanel.java ./GameThread.java ./Target.java
           jar cvfe Game.jar Game -C ./out .
 
