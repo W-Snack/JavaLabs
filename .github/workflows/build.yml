@@ -59,12 +59,9 @@ jobs:
             --dest C:\dist `
             --win-console
 
-      - name: Compress Portable Folder
-        run: |
-          Compress-Archive -Path ./dist/SniperGame -DestinationPath ./dist/SniperGame.zip
 
       - name: Upload Portable Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: SniperGame-Portable.zip
-          path: ./dist/SniperGame.zip
+          name: SniperGame-Portable.exe
+          path: ./dist/SniperGame.exe
