@@ -56,7 +56,7 @@ jobs:
             --main-jar Game.jar `
             --main-class Game `
             --type app-image `
-            --dest ./dist `
+            --dest C:\dist `
             --win-console
 
       - name: Compress Portable Folder
