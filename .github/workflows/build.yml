@@ -46,7 +46,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Install WiX (требуется для сборки)
-        run: choco install wix
+        run: choco install wixtoolset -y
 
       - name: Generate Portable App
         run: |
